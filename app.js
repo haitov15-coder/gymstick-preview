@@ -177,7 +177,7 @@
     player.setAttribute('aria-labelledby', 'player-title');
     player.innerHTML = '<div class="player__bar"><h2 class="player__title" id="player-title"></h2>' +
       '<button class="player__close" type="button">סגירה</button></div>' +
-      '<div class="player__frame"></div><p class="player__note">סרטון של Gymstick, מוצג מיוטיוב.</p>';
+      '<div class="player__frame"></div><p class="player__note">סרטון שלנו, מוצג דרך יוטיוב.</p>';
     document.body.appendChild(player);
     var playerTitle = $('.player__title', player);
     var playerFrame = $('.player__frame', player);
