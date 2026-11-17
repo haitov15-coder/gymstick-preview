@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Karantina:wght@700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=9">
+<link rel="stylesheet" href="styles.css?v=10">
 <script defer src="app.js?v=8"></script>
 <script defer src="vendor/three.classic.js"></script>
 <script defer src="viewer3d.js?v=6"></script>
@@ -54,10 +54,11 @@
 
 <main id="main">
 
-  <!-- the opening: the maker's class film across the whole screen, on every screen. app.js picks the upright
-       or the wide cut, starts it without sound, and shows the two buttons that stop it and turn the sound on. -->
+  <!-- the opening: the maker's class film behind the words, on every screen: across the whole hero on a wide
+       screen, and as a 4:5 picture over its top on an upright one. app.js picks the cut, starts it without
+       sound, and shows the two buttons that stop it and turn the sound on. -->
   <section class="hero" aria-labelledby="hero-h">
-    <video class="hero__video" muted loop playsinline preload="none" data-wide="video/intro-wide-hd.mp4" data-tall="video/intro-tall-hd.mp4" aria-label="שיעור קבוצתי עם מוטות Gymstick: מכרעים, סקוואטים ותרגילי רצפה"></video>
+    <video class="hero__video" muted loop playsinline preload="none" data-wide="video/intro-wide-hd.mp4" data-tall="video/intro-upright.mp4" aria-label="שיעור קבוצתי עם מוטות Gymstick: מכרעים, סקוואטים ותרגילי רצפה"></video>
     <div class="wrap hero__inner">
       <div class="hero__copy">
         <h1 class="display" id="hero-h">האימון שלך.<br>בקצב שלך.</h1>

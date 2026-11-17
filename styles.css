@@ -119,8 +119,8 @@ h3, .h3 { font: 800 clamp(1.3rem, 1.6vw, 1.6rem)/1.25 var(--f-text); }
 @media (min-width: 901px) { .nav .btn { display: none; } }
 
 /* ---------- hero ----------
-   The maker's class film across the whole first screen, on every screen: the upright cut on an upright
-   screen, the wide one elsewhere. It starts without sound (browsers allow nothing else); two buttons in the
+   The maker's class film behind the words on every screen: the wide cut across the whole hero, or, on an
+   upright screen, a 4:5 cut over its top. It starts without sound (browsers allow nothing else); two buttons in the
    corner stop it and turn its sound on. The words stand in white over a scrim. */
 /* the film's first frame stands behind the film, so the screen is never empty (and stays when motion is reduced) */
 .hero { position: relative; overflow: hidden; background: var(--coal) url("video/intro-wide.jpg") center / cover no-repeat; color: #fff; }
@@ -140,7 +140,12 @@ h3, .h3 { font: 800 clamp(1.3rem, 1.6vw, 1.6rem)/1.25 var(--f-text); }
 .hero__ctl { min-height: 44px; padding: 0 18px; border: 1.5px solid rgb(255 255 255 / .8); border-radius: 22px; background: rgb(20 22 24 / .55); color: #fff; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background-color 140ms ease, border-color 140ms ease; }
 .hero__ctl:hover { border-color: #fff; background: rgb(20 22 24 / .85); }
 @media (max-aspect-ratio: 4/5) {
-  .hero { background-image: url("video/intro-tall.jpg"); }
+  /* An upright screen gets the film as a 4:5 picture across the top of the hero, not a narrow slice of it
+     stretched over the whole screen: it shows far more of the frame and is hardly enlarged, so it stays
+     sharp. It fades into the hero's own dark ground, and the words stand over its lower part. */
+  .hero { background: var(--coal) url("video/intro-upright.jpg") top center / 100% auto no-repeat; }
+  .hero__video { inset: 0 0 auto; height: auto; aspect-ratio: 4 / 5; }
+  .hero::after { inset: 0 0 auto; aspect-ratio: 4 / 5; background: linear-gradient(to top, var(--coal) 0%, rgb(28 31 34 / .8) 24%, rgb(28 31 34 / .24) 58%, rgb(28 31 34 / 0) 100%); }
 }
 @media (max-width: 900px) {
   .hero__inner { min-height: calc(100svh - var(--header-h)); padding-bottom: 48px; }
