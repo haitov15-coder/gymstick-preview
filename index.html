@@ -11,8 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Karantina:wght@700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=8">
-<script defer src="app.js?v=6"></script>
+<link rel="stylesheet" href="styles.css?v=9">
+<script defer src="app.js?v=8"></script>
 <script defer src="vendor/three.classic.js"></script>
 <script defer src="viewer3d.js?v=6"></script>
 <script defer src="moves3d.js?v=6"></script>
@@ -54,10 +54,10 @@
 
 <main id="main">
 
-  <!-- the opening. Wide screens: the studio photograph with the whole product in view. Phones and upright
-       tablets: the training film across the whole screen, in a loop with no controls (app.js loads it there only) -->
+  <!-- the opening: the maker's class film across the whole screen, on every screen. app.js picks the upright
+       or the wide cut, starts it without sound, and shows the two buttons that stop it and turn the sound on. -->
   <section class="hero" aria-labelledby="hero-h">
-    <video class="hero__video" muted loop playsinline preload="none" data-wide="video/hero-wide.mp4" data-tall="video/hero-tall.mp4" aria-label="מאמנת ומאמן מתאמנים עם מוטות Gymstick: המוט על הכתפיים, לחיצה מעל הראש ומכרעים"></video>
+    <video class="hero__video" muted loop playsinline preload="none" data-wide="video/intro-wide.mp4" data-tall="video/intro-tall.mp4" aria-label="שיעור קבוצתי עם מוטות Gymstick: מכרעים, סקוואטים ותרגילי רצפה"></video>
     <div class="wrap hero__inner">
       <div class="hero__copy">
         <h1 class="display" id="hero-h">האימון שלך.<br>בקצב שלך.</h1>
@@ -72,13 +72,10 @@
         </p>
       </div>
     </div>
-    <!-- a phone gets a one-pixel stand-in here, so it never downloads the photograph it does not show -->
-    <figure class="hero__figure">
-      <picture>
-        <source media="(max-width: 900px)" srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
-        <img src="img/hero-curl.webp" width="1267" height="1900" alt="מאמן עומד ומכופף מרפקים עם מוט Gymstick שחור; שתי גומיות מתוחות מקצות המוט אל כפות הרגליים" fetchpriority="high">
-      </picture>
-    </figure>
+    <div class="hero__controls" data-hero-controls hidden>
+      <button class="hero__ctl" type="button" data-hero-sound>הפעלת קול</button>
+      <button class="hero__ctl" type="button" data-hero-play>עצירה</button>
+    </div>
   </section>
 
   <!-- ways to train: three real photographs, one movement each -->

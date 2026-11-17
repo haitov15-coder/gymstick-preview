@@ -80,39 +80,71 @@
     });
   }
 
-  // ---- the training film: it runs in a loop with no controls. A phone or an upright tablet gets it as the
-  // hero (the upright cut on an upright screen); a wide screen gets it in the training section, playing while
-  // it is on the screen. Each screen downloads only the cut it shows. A visitor whose system asks for less
-  // motion gets the still picture instead (it is the box's own background). ----
+  // ---- the two films. The hero's film runs in a loop on every screen (the upright cut on an upright
+  // screen) and starts without sound, because browsers start nothing else on their own; its two buttons
+  // stop it and turn the sound on. It rests while the hero is off the screen. The trainers' film in the
+  // training section plays while it is on the screen. A visitor whose system asks for less motion gets the
+  // still pictures, and the hero's film only if they press play. ----
   var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var phoneLayout = window.matchMedia('(max-width: 900px)');
   var start = function (video) {
     var started = video.play();
     if (started && started.catch) started.catch(function () { /* tried again on the next chance */ });
   };
   var heroFilm = $('.hero__video');
-  if (heroFilm && !calm) {
-    var armHero = function () {
-      if (!phoneLayout.matches) { if (heroFilm.getAttribute('src')) heroFilm.pause(); return; }
-      if (!heroFilm.getAttribute('src')) {
-        var upright = window.matchMedia('(max-aspect-ratio: 4/5)').matches;
-        heroFilm.src = upright ? heroFilm.dataset.tall : heroFilm.dataset.wide;
+  var heroPlay = $('[data-hero-play]');
+  var heroSound = $('[data-hero-sound]');
+  if (heroFilm && heroPlay && heroSound) {
+    var heroStopped = calm;   // the visitor's own choice, kept apart from the pauses the page makes
+    var heroSeen = true;
+    var uprightScreen = window.matchMedia('(max-aspect-ratio: 4/5)');
+    var heroCut = function () { return uprightScreen.matches ? heroFilm.dataset.tall : heroFilm.dataset.wide; };
+    var syncHero = function () {
+      if (heroStopped || !heroSeen || document.hidden) {
+        if (heroFilm.getAttribute('src')) heroFilm.pause();
+      } else {
+        if (!heroFilm.getAttribute('src')) heroFilm.src = heroCut();
+        if (heroFilm.paused) {
+          var started = heroFilm.play();
+          if (started && started.catch) started.catch(function () {
+            // a start with sound that the browser refuses falls back to a silent one
+            if (!heroFilm.muted) { heroFilm.muted = true; syncHero(); }
+          });
+        }
       }
-      if (heroFilm.paused) start(heroFilm);
+      heroPlay.textContent = heroStopped ? 'הפעלה' : 'עצירה';
+      heroSound.textContent = heroFilm.muted ? 'הפעלת קול' : 'השתקה';
     };
-    // a start the browser refuses (a hidden or sleeping window) is tried again when the film can play,
+    heroPlay.addEventListener('click', function () { heroStopped = !heroStopped; syncHero(); });
+    heroSound.addEventListener('click', function () {
+      heroFilm.muted = !heroFilm.muted;
+      if (!heroFilm.muted) heroStopped = false;   // asking for the sound also asks for the film
+      syncHero();
+    });
+    // a start the browser refused (a hidden or sleeping window) is tried again when the film can play,
     // when the page is seen again, and on the first touch
-    heroFilm.addEventListener('canplay', armHero);
-    document.addEventListener('visibilitychange', function () { if (!document.hidden) armHero(); });
-    window.addEventListener('pointerdown', armHero, { passive: true });
-    if (phoneLayout.addEventListener) phoneLayout.addEventListener('change', armHero); else phoneLayout.addListener(armHero);
-    armHero();
+    heroFilm.addEventListener('canplay', syncHero);
+    document.addEventListener('visibilitychange', syncHero);
+    window.addEventListener('pointerdown', syncHero, { passive: true });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) { heroSeen = entries[0].isIntersecting; syncHero(); }, { threshold: 0.15 }).observe(heroFilm);
+    }
+    // a turned phone or a reshaped window changes the cut; both cuts share one clock, so the film goes on
+    // from the same moment
+    var recut = function () {
+      if (!heroFilm.getAttribute('src') || heroFilm.getAttribute('src') === heroCut()) return;
+      var at = heroFilm.currentTime;
+      heroFilm.addEventListener('loadedmetadata', function () { heroFilm.currentTime = at; }, { once: true });
+      heroFilm.src = heroCut();
+      syncHero();
+    };
+    if (uprightScreen.addEventListener) uprightScreen.addEventListener('change', recut); else uprightScreen.addListener(recut);
+    $('[data-hero-controls]').hidden = false;
+    syncHero();
   }
   var trainFilm = $('.train-film__video');
   if (trainFilm && !calm && 'IntersectionObserver' in window) {
     new IntersectionObserver(function (entries) {
-      var seen = entries[0].isIntersecting && !phoneLayout.matches;
-      if (seen) {
+      if (entries[0].isIntersecting) {
         if (!trainFilm.getAttribute('src')) trainFilm.src = trainFilm.dataset.src;
         start(trainFilm);
       } else if (trainFilm.getAttribute('src')) trainFilm.pause();
