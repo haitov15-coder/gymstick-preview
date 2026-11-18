@@ -80,16 +80,11 @@
     });
   }
 
-  // ---- the two films. The hero's film runs in a loop on every screen (the upright cut on an upright
-  // screen) and starts without sound, because browsers start nothing else on their own; its two buttons
-  // stop it and turn the sound on. It rests while the hero is off the screen. The trainers' film in the
-  // training section plays while it is on the screen. A visitor whose system asks for less motion gets the
-  // still pictures, and the hero's film only if they press play. ----
+  // ---- the hero's film. It runs in a loop on every screen (the upright cut on an upright screen) and
+  // starts without sound, because browsers start nothing else on their own; its two buttons stop it and
+  // turn the sound on. It rests while the hero is off the screen. A visitor whose system asks for less
+  // motion gets the still picture, and the film only if they press play. ----
   var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var start = function (video) {
-    var started = video.play();
-    if (started && started.catch) started.catch(function () { /* tried again on the next chance */ });
-  };
   var heroFilm = $('.hero__video');
   var heroPlay = $('[data-hero-play]');
   var heroSound = $('[data-hero-sound]');
@@ -141,16 +136,6 @@
     $('[data-hero-controls]').hidden = false;
     syncHero();
   }
-  var trainFilm = $('.train-film__video');
-  if (trainFilm && !calm && 'IntersectionObserver' in window) {
-    new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) {
-        if (!trainFilm.getAttribute('src')) trainFilm.src = trainFilm.dataset.src;
-        start(trainFilm);
-      } else if (trainFilm.getAttribute('src')) trainFilm.pause();
-    }, { rootMargin: '200px 0px' }).observe(trainFilm);
-  }
-
   // ---- the exercise library: one filter, by the part of the body ----
   var filters = $('[data-filters]');
   if (filters) {

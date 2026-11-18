@@ -155,15 +155,6 @@ h3, .h3 { font: 800 clamp(1.3rem, 1.6vw, 1.6rem)/1.25 var(--f-text); }
 }
 
 /* ---------- ways to train ---------- */
-/* the film of the two trainers plays here, beside the heading (under it on a phone) */
-.train-intro { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 5vw, 72px); align-items: end; margin-bottom: clamp(36px, 5vw, 64px); }
-.train-intro .section-head { margin-bottom: 0; }
-.train-film { aspect-ratio: 16 / 9; overflow: hidden; background: var(--coal-2); }
-.train-film__video { display: block; width: 100%; height: 100%; object-fit: cover; }
-.train-film { background: var(--coal-2) url("video/hero-wide.jpg") center / cover no-repeat; }
-@media (max-width: 900px) {
-  .train-intro { grid-template-columns: 1fr; }
-}
 .moves { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2vw, 28px); }
 .move { display: grid; gap: 14px; align-content: start; }
 .move__pic { aspect-ratio: 3 / 4; overflow: hidden; background: var(--studio); }
