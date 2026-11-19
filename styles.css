@@ -309,6 +309,8 @@ h3, .h3 { font: 800 clamp(1.3rem, 1.6vw, 1.6rem)/1.25 var(--f-text); }
 .includes li.is-open::before { top: 8px; width: 12px; height: 12px; border: 2px dashed var(--draft-ink); border-radius: 50%; transform: none; }
 .price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px; font: 700 2.4rem/1.1 var(--f-display); }
 .price .tbd { font: 600 1rem/1.5 var(--f-text); }
+.price__label { font: 600 1rem/1.5 var(--f-text); color: var(--muted); }
+.buybar__price { flex: none; margin-inline-start: auto; font-size: 1.2rem; font-weight: 800; white-space: nowrap; }
 @media (max-width: 980px) {
   .kits { grid-template-columns: 1fr; }
   .kit-panel { position: static; }
