@@ -156,7 +156,8 @@ h3, .h3 { font: 800 clamp(1.3rem, 1.6vw, 1.6rem)/1.25 var(--f-text); }
 }
 
 /* ---------- ways to train ---------- */
-.moves { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2vw, 28px); }
+.moves { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(32px, 4vw, 56px) clamp(16px, 2vw, 28px); }
+.moves + .draft-note { margin-top: 24px; }
 .move { display: grid; gap: 14px; align-content: start; }
 .move__pic { aspect-ratio: 3 / 4; overflow: hidden; background: var(--studio); }
 .move__pic img { width: 100%; height: 100%; object-fit: cover; object-position: var(--pos, 50% 50%); }
