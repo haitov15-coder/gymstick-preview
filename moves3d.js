@@ -191,19 +191,20 @@ const MOVES = {
       ex: 0.6, ey: -1, ez: 0, bl: 1, br: 1,
     }),
   },
-  // standing on the stick in a half squat with the loops in the hands: the left hand stays in front of the
-  // chest, the right presses straight up
+  // in a half squat with a loop in each hand, the stick lying lengthwise under the left foot: the left hand stays
+  // in front of the chest with the band from the stick's front end, and the right presses straight up from beside
+  // the shoulder, its band stretching up behind the back from the stick's rear end
   onearm: {
     time: [1.1, 0.3, 1.5, 0.45],
-    cam: { yaw: -0.9, y: 0.95, z: -0.05, half: 1.16 },
+    cam: { yaw: -1.25, y: 0.95, z: -0.03, half: 1.16 },
     pose: (u) => {
       const py = 0.83, pz = -0.16, lean = 0.26;
       const cy = py + 0.475 * Math.cos(lean), cz = pz + 0.475 * Math.sin(lean);   // the base of the neck
       return pose({
-        py, pz, lean, lx: 0.19, ly: ON_STICK, lyaw: 0.2, rx: -0.19, ry: ON_STICK, ryaw: -0.2, knee: 0.25,
-        sw: 1, tz: 0.01,
+        py, pz, lean, lx: 0.17, ly: ON_STICK, lz: 0.16, lyaw: 0, rx: -0.17, rz: 0.02, ryaw: -0.2, knee: 0.25,
+        sw: 1, tx: 0.17, tz: 0.02, tyaw: -Math.PI / 2,
         hf: 1, hlx: 0.07, hly: cy - 0.155, hlz: cz + 0.17,
-        hrx: -lerp(0.25, 0.24, u), hry: cy + lerp(0.005, 0.51, u), hrz: cz + lerp(0.154, 0.024, u),
+        hrx: -lerp(0.32, 0.24, u), hry: cy + lerp(0.1, 0.51, u), hrz: cz + lerp(-0.02, 0.024, u),
         ex: 0.6, ey: -1, ez: 0.2, bl: 1, br: 1,
       });
     },
