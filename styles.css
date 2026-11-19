@@ -172,12 +172,14 @@ h3, .h3 { font: 800 clamp(1.3rem, 1.6vw, 1.6rem)/1.25 var(--f-text); }
 .moves3d__body { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); grid-template-rows: auto 1fr; column-gap: clamp(24px, 4vw, 56px); align-items: start; }
 .moves3d__picks { grid-column: 1; grid-row: 1; border-top: 2px solid var(--on-coal); }
 .moves3d__picks > li { border-bottom: 1px solid rgb(244 245 246 / .2); }
-.moves3d__pick { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 14px; row-gap: 2px; width: 100%; min-height: 56px; padding: 16px 0; border: 0; background: none; color: var(--on-coal-muted); text-align: start; cursor: pointer; }
+.moves3d__pick { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 14px; row-gap: 2px; width: 100%; min-height: 52px; padding: 10px 0; border: 0; background: none; color: var(--on-coal-muted); text-align: start; cursor: pointer; }
 .moves3d__mark { grid-row: 1 / span 2; display: grid; place-items: center; width: 30px; height: 30px; margin-top: 1px; border: 1.5px solid var(--on-coal); border-radius: 50%; color: var(--on-coal); transition: background-color 140ms ease, color 140ms ease; }
 /* a play triangle; it points the way a film plays, whichever way the page reads */
 .moves3d__mark::before { content: ""; margin-left: 3px; border-style: solid; border-width: 5.5px 0 5.5px 9px; border-color: transparent transparent transparent currentColor; }
 .moves3d__name { color: var(--on-coal); font-weight: 800; font-size: 1.2rem; line-height: 1.3; }
-.moves3d__how { grid-column: 2; font-size: 1rem; line-height: 1.45; transition: color 140ms ease; }
+/* with nine movements the list stays short: only the chosen one shows how it is done */
+.moves3d__how { display: none; grid-column: 2; font-size: 1rem; line-height: 1.45; }
+.moves3d__pick[aria-pressed="true"] .moves3d__how { display: block; }
 .moves3d__pick:hover .moves3d__mark, .moves3d__pick[aria-pressed="true"] .moves3d__mark { background: var(--on-coal); color: var(--coal); }
 .moves3d__pick[aria-pressed="true"] .moves3d__how { color: var(--on-coal); }
 .moves3d__stage { grid-column: 2; grid-row: 1 / span 2; position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: var(--studio); color: var(--coal); }
@@ -202,7 +204,7 @@ h3, .h3 { font: 800 clamp(1.3rem, 1.6vw, 1.6rem)/1.25 var(--f-text); }
   .moves3d__picks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; border-top: 0; }
   .moves3d__picks > li { display: grid; border-bottom: 0; }
   .moves3d__pick { display: grid; place-items: center; min-height: 58px; padding: 8px 6px; border: 1.5px solid var(--on-coal-muted); border-radius: var(--radius); text-align: center; }
-  .moves3d__mark, .moves3d__how { display: none; }
+  .moves3d__mark, .moves3d__how, .moves3d__pick[aria-pressed="true"] .moves3d__how { display: none; }
   .moves3d__name { font-size: 1rem; line-height: 1.2; }
   .moves3d__pick[aria-pressed="true"] { background: var(--on-coal); border-color: var(--on-coal); }
   .moves3d__pick[aria-pressed="true"] .moves3d__name { color: var(--coal); }

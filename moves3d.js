@@ -1,9 +1,9 @@
-// The exercise demonstrations in 3D for the second design: a jointed training figure performs three movements
-// with the Gymstick in a loop, and a drag turns it. The poses follow the photographs in the same section (a
-// squat with the stick on the shoulders, a press overhead, a lunge with a turn of the trunk). Arms and legs
-// are solved from where the hands and feet must be, so the hands stay on the stick and the feet on the floor.
-// A classic script (three.js comes from vendor/three.classic.js), so it also runs when the page is opened as
-// a file. Without WebGL nothing here runs and the block stays hidden, leaving the photographs on their own.
+// The exercise demonstrations in 3D for the second design: a jointed training figure performs nine movements
+// with the Gymstick in a loop, and a drag turns it. The poses follow the photographs in the same section.
+// Arms and legs are solved from where the hands and feet must be, so the hands stay on the stick or on the
+// bands' loops, and the feet where the movement puts them. A classic script (three.js comes from
+// vendor/three.classic.js), so it also runs when the page is opened as a file. Without WebGL nothing here
+// runs and the block stays hidden, leaving the photographs on their own.
 (function () {
 const THREE = window.THREE;
 if (!THREE) return;
@@ -40,28 +40,50 @@ const ramp = (a, b, t) => smooth((t - a) / (b - a));
 
 // Each movement: the time of its four parts (going, holding, returning, resting), where the camera stands,
 // and the pose at any point u between its start (0) and its end (1). The figure faces +z and its left is +x.
-// A pose gives: the hips (py, pz), the forward lean and the turn of the chest, each foot (the ball's place,
-// its turn, how far the heel is lifted), how far the knees open, the stick's place on the chest (sx, sy, sz)
-// and its turn against the chest (syaw, sroll), the grip's half width, where the wrist sits against the
-// stick, and the direction the elbows point.
+//
+// A pose starts from BASE and changes what it needs:
+//   the hips (px, py, pz), the forward lean and the turn of the chest, how far the hips (pt) and the head (hp)
+//     follow the lean;
+//   each foot: the ball's place (x, y, z), its turn, how far the heel is lifted, its sideways roll; how far
+//     the knees open (knee) and whether they point down (khl, khr), as they do on all fours;
+//   the stick: its place on the chest (sx, sy, sz, syaw, sroll) or in the room (tx, ty, tz, tyaw, troll),
+//     and which of the two counts (sw: 0 on the chest, 1 in the room);
+//   the hands: where each grips the stick (gl, gr, along its length) and where the wrist sits against it
+//     (wy, wz), or a free place in the room for each (hl*, hr*) when they hold the bands' loops instead
+//     (hf: 0 on the stick, 1 free); the direction the elbows point (ex, ey, ez);
+//   each band's far end (bl, br): 0 at the foot loop, 1 in the hand.
+const BASE = {
+  px: 0, py: 0.922, pz: 0, lean: 0, twist: 0, pt: 0.45, hp: 0.25,
+  lx: 0.17, ly: 0, lz: 0.08, lyaw: 0.14, llift: 0, lroll: 0,
+  rx: -0.17, ry: 0, rz: 0.08, ryaw: -0.14, rlift: 0, rroll: 0,
+  knee: 0.12, khl: 0, khr: 0,
+  sw: 0, sx: 0, sy: 0, sz: 0.2, syaw: 0, sroll: 0, tx: 0, ty: 0.0275, tz: 0, tyaw: 0, troll: 0,
+  gl: 0.37, gr: -0.37, wy: -0.05, wz: 0,
+  hf: 0, hlx: 0.2, hly: 1.2, hlz: 0.2, hrx: -0.2, hry: 1.2, hrz: 0.2,
+  ex: 0.5, ey: -1, ez: 0,
+  bl: 0, br: 0,
+};
+const pose = (changes) => Object.assign({}, BASE, changes);
+// feet that stand on the stick lying on the floor are lifted by the thickness of its foam grip
+const ON_STICK = 0.045;
+
 const MOVES = {
   squat: {
     time: [1.5, 0.25, 1.2, 0.5],
     cam: { yaw: -0.62, y: 0.84, z: -0.04, half: 1.03 },
-    pose: (u) => ({
-      py: lerp(0.925, 0.5, u), pz: lerp(0, -0.27, u), lean: lerp(0.05, 0.5, u), twist: 0,
-      lx: 0.2, lz: 0.09, lyaw: 0.21, llift: 0, rx: -0.2, rz: 0.09, ryaw: -0.21, rlift: 0, knee: 0.3,
-      sx: 0, sy: 0.075, sz: -0.085, syaw: 0, sroll: 0, grip: 0.37, wy: -0.05, wz: 0.025, ex: 0.25, ey: -1, ez: -0.25,
+    pose: (u) => pose({
+      py: lerp(0.925, 0.5, u), pz: lerp(0, -0.27, u), lean: lerp(0.05, 0.5, u),
+      lx: 0.2, lz: 0.09, lyaw: 0.21, rx: -0.2, rz: 0.09, ryaw: -0.21, knee: 0.3,
+      sy: 0.075, sz: -0.085, gl: 0.37, gr: -0.37, wy: -0.05, wz: 0.025, ex: 0.25, ey: -1, ez: -0.25,
     }),
   },
   press: {
     time: [1.1, 0.3, 1.5, 0.45],
     cam: { yaw: -0.36, y: 1.01, z: 0, half: 1.2 },
-    pose: (u) => ({
-      py: 0.922, pz: 0, lean: lerp(0.02, -0.02, u), twist: 0,
-      lx: 0.17, lz: 0.08, lyaw: 0.14, llift: 0, rx: -0.17, rz: 0.08, ryaw: -0.14, rlift: 0, knee: 0.12,
+    pose: (u) => pose({
+      lean: lerp(0.02, -0.02, u),
       // the stick clears the face on its way up, then settles over the shoulders
-      sx: 0, sy: lerp(0.04, 0.535, u), sz: 0.15 - 0.13 * ramp(0.55, 1, u), syaw: 0, sroll: 0, grip: 0.38, wy: -0.055, wz: 0,
+      sy: lerp(0.04, 0.535, u), sz: 0.15 - 0.13 * ramp(0.55, 1, u), gl: 0.38, gr: -0.38, wy: -0.055, wz: 0,
       ex: lerp(0.5, 1, u), ey: -1, ez: lerp(0.4, 0.1, u),
     }),
   },
@@ -72,14 +94,99 @@ const MOVES = {
       // going down, the trunk turns to the front leg and the left hand (on the back leg's side) pushes the
       // stick forward until that arm is straight, while the right hand draws back to the ribs
       const push = smooth(u);
-      return {
+      return pose({
         py: lerp(0.82, 0.525, u), pz: lerp(-0.12, -0.15, u), lean: lerp(0.06, 0.1, u), twist: -0.6 * push,
         // the right foot in front, flat; the left behind, on its toes
-        lx: 0.13, lz: -0.57, lyaw: 0, llift: lerp(0.6, 1.05, u), rx: -0.13, rz: 0.42, ryaw: 0, rlift: 0, knee: 0,
+        lx: 0.13, lz: -0.57, lyaw: 0, llift: lerp(0.6, 1.05, u), rx: -0.13, rz: 0.42, ryaw: 0, knee: 0,
         sx: 0.25 * push, sy: lerp(-0.07, -0.16, push), sz: lerp(0.3, 0.22, push), syaw: -0.25 * push, sroll: 0.16 * push,
-        grip: 0.375, wy: -0.02, wz: -0.055, ex: lerp(1, 0.4, push), ey: lerp(-0.7, -0.3, push), ez: -push,
-      };
+        gl: 0.375, gr: -0.375, wy: -0.02, wz: -0.055, ex: lerp(1, 0.4, push), ey: lerp(-0.7, -0.3, push), ez: -push,
+      });
     },
+  },
+  // standing curl: the elbows stay by the sides and the forearms swing the stick from the thighs to the chest
+  curl: {
+    time: [1.2, 0.3, 1.5, 0.45],
+    cam: { yaw: -0.5, y: 0.9, z: 0, half: 1.06 },
+    pose: (u) => {
+      const a = lerp(-1.25, 0.6, u), sin = Math.sin(a), cos = Math.cos(a);   // the forearm's angle about the elbow
+      return pose({
+        lean: 0.02, lx: 0.14, rx: -0.14,
+        sy: -0.275 + 0.3 * sin + 0.035 * cos, sz: -0.01 + 0.3 * cos - 0.035 * sin,
+        gl: 0.2, gr: -0.2, wy: -(0.035 * cos + 0.05 * sin), wz: 0.035 * sin - 0.05 * cos,
+        ex: 0.15, ey: -0.4, ez: -1,
+      });
+    },
+  },
+  // on all fours, the hands on the stick that lies on the floor: one leg lifts back and up against its band
+  kick: {
+    time: [1.3, 0.35, 1.4, 0.45],
+    cam: { yaw: -1.25, y: 0.52, z: -0.28, half: 0.86 },
+    pose: (u) => {
+      const e = smooth(u);
+      const ankleY = lerp(0.2, 1.015, e), ankleZ = lerp(-0.67, -0.862, e), pitch = lerp(1.45, 2.27, e);   // the right foot
+      return pose({
+        py: 0.5, pz: -0.25, lean: 1.358, pt: 0.95, hp: 0.72,
+        lx: 0.095, ly: 0.06, lz: -0.739, lyaw: 0, llift: 1.45,
+        rx: -0.095, ry: ankleY - (0.085 * Math.cos(pitch) + 0.13 * Math.sin(pitch)), rz: ankleZ - (0.085 * Math.sin(pitch) - 0.13 * Math.cos(pitch)), ryaw: 0, rlift: pitch,
+        knee: 0, khl: -1.5, khr: -1.5,
+        sw: 1, tx: 0, ty: 0.0275, tz: 0.234,
+        gl: 0.2, gr: -0.2, wy: 0.05, wz: 0, ex: 0.3, ey: -1, ez: 0,
+      });
+    },
+  },
+  // standing on the stick, the two loops held together behind the head: the arms straighten upward
+  triceps: {
+    time: [1.1, 0.3, 1.5, 0.45],
+    cam: { yaw: -0.75, y: 1.02, z: 0, half: 1.22 },
+    pose: (u) => pose({
+      py: 0.922 + ON_STICK, lean: 0.03, lx: 0.15, ly: ON_STICK, rx: -0.15, ry: ON_STICK,
+      sw: 1, tz: 0.01,
+      hf: 1, hlx: lerp(0.045, 0.06, u), hly: lerp(1.56, 1.94, u), hlz: lerp(-0.17, -0.03, u),
+      hrx: -lerp(0.045, 0.06, u), hry: lerp(1.56, 1.94, u), hrz: lerp(-0.17, -0.03, u),
+      ex: 0.35, ey: 1, ez: 0.6, bl: 1, br: 1,
+    }),
+  },
+  // standing on one leg, the stick held as a staff: the other leg lifts out to the side against its band
+  sideleg: {
+    time: [1.3, 0.35, 1.4, 0.45],
+    cam: { yaw: -0.12, y: 0.82, z: 0, half: 1.0 },
+    pose: (u) => {
+      const a = lerp(0.18, 1.35, smooth(u));   // the right leg's angle away from the standing one
+      const ankleX = -0.045 - 0.845 * Math.sin(a), ankleY = 0.922 - 0.845 * Math.cos(a);
+      return pose({
+        px: 0.05, lean: 0.03,
+        lx: 0.07, lz: 0.06, lyaw: 0.1,
+        rx: ankleX - 0.085 * Math.sin(a), ry: ankleY - 0.085 * Math.cos(a), rz: 0.13, ryaw: 0, rroll: -a, knee: 0,
+        // the stick leans from the floor on the left up to the hands; its upper end's band runs to the standing foot
+        sw: 1, tx: 0.36, ty: 0.56, tz: 0.1, tyaw: 3.28, troll: 0.979,
+        gl: 0.44, gr: 0.6, wy: 0, wz: 0.05, ex: 0.6, ey: -1, ez: -0.2,
+      });
+    },
+  },
+  // standing on the stick with the loops in the hands: down into a squat while the arms reach forward
+  reach: {
+    time: [1.5, 0.3, 1.3, 0.5],
+    cam: { yaw: -0.85, y: 0.86, z: 0.05, half: 1.03 },
+    pose: (u) => pose({
+      py: lerp(0.922 + ON_STICK, 0.56, u), pz: lerp(0, -0.26, u), lean: lerp(0.05, 0.55, u),
+      lx: 0.19, ly: ON_STICK, lz: 0.09, lyaw: 0.2, rx: -0.19, ry: ON_STICK, rz: 0.09, ryaw: -0.2, knee: 0.3,
+      sw: 1, tz: 0.02,
+      hf: 1, hlx: lerp(0.05, 0.04, u), hly: lerp(1.3, 0.965, u), hlz: lerp(0.2, 0.49, u),
+      hrx: -lerp(0.05, 0.04, u), hry: lerp(1.3, 0.965, u), hrz: lerp(0.2, 0.49, u),
+      ex: 0.6, ey: -1, ez: 0, bl: 1, br: 1,
+    }),
+  },
+  // standing on the stick with the loops in the hands: one hand stays by the chest, the other presses up
+  onearm: {
+    time: [1.1, 0.3, 1.5, 0.45],
+    cam: { yaw: -0.9, y: 1.0, z: 0, half: 1.2 },
+    pose: (u) => pose({
+      py: 0.88 + ON_STICK, pz: -0.06, lean: 0.14, lx: 0.17, ly: ON_STICK, rx: -0.17, ry: ON_STICK, knee: 0.2,
+      sw: 1, tz: 0.01,
+      hf: 1, hlx: lerp(0.25, 0.24, u), hly: lerp(1.4, 1.905, u), hlz: lerp(0.16, 0.03, u),
+      hrx: -0.13, hry: 1.24, hrz: 0.17,
+      ex: 0.6, ey: -1, ez: 0.2, bl: 1, br: 1,
+    }),
   },
 };
 
@@ -167,11 +274,13 @@ const SIDES = [1, -1].map((sign) => {
   sole.scale.set(1.05, 0.82, 1);
   sole.position.set(0, 0.04, -0.06);
   // the foot loop of the band, with its red label on the outer side
-  part(new THREE.BoxGeometry(0.108, 0.074, 0.036), dark, foot).position.set(0, 0.043, -0.07);
-  part(new THREE.BoxGeometry(0.005, 0.03, 0.03), red, foot).position.set(sign * 0.0565, 0.05, -0.07);
+  const strap = new THREE.Group();
+  foot.add(strap);
+  part(new THREE.BoxGeometry(0.108, 0.074, 0.036), dark, strap).position.set(0, 0.043, -0.07);
+  part(new THREE.BoxGeometry(0.005, 0.03, 0.03), red, strap).position.set(sign * 0.0565, 0.05, -0.07);
   return {
-    sign, foot,
-    v: Object.fromEntries(['shoulder', 'elbow', 'wrist', 'grip', 'end', 'hip', 'knee', 'ankle', 'ball', 'loop'].map((k) => [k, new THREE.Vector3()])),
+    sign, foot, strap,
+    v: Object.fromEntries(['shoulder', 'elbow', 'wrist', 'grip', 'hand', 'end', 'far', 'hip', 'knee', 'ankle', 'ball', 'loop'].map((k) => [k, new THREE.Vector3()])),
     footQ: new THREE.Quaternion(),
     shoulderBall: ball(0.06), upperArm: limb(0.048, 0.04, M.upperArm), elbowBall: ball(0.043), forearm: limb(0.039, 0.03, M.forearm),
     fist: solid(0.047, 0.86, 1, 1),
@@ -197,7 +306,7 @@ const X = new THREE.Vector3(1, 0, 0), Y = new THREE.Vector3(0, 1, 0), Z = new TH
 const J = Object.fromEntries(['pelvis', 'waist', 'chest', 'collar', 'neck', 'head', 'stick'].map((k) => [k, new THREE.Vector3()]));
 const Q = Object.fromEntries(['pelvis', 'waist', 'chest', 'head', 'stick'].map((k) => [k, new THREE.Quaternion()]));
 const spine = new THREE.Vector3(), axis = new THREE.Vector3(), hint = new THREE.Vector3();
-const tA = new THREE.Vector3(), tB = new THREE.Vector3(), tQ = new THREE.Quaternion();
+const tA = new THREE.Vector3(), tB = new THREE.Vector3(), tQ = new THREE.Quaternion(), qRoom = new THREE.Quaternion();
 
 // a turn about the upright axis, then a tilt about the side axis, then (for the trunk) a turn about its own length
 const turn = (out, yaw, pitch, roll = 0) => {
@@ -221,11 +330,11 @@ const bend = (from, to, a, b, toward, out) => {
 
 const solve = (p) => {
   // the trunk: the hips tilt less than the chest, and the turn builds up along the spine; the head stays up
-  turn(Q.pelvis, 0, p.lean * 0.45);
-  turn(Q.waist, 0, p.lean * 0.8, p.twist * 0.4);
+  turn(Q.pelvis, 0, p.lean * p.pt);
+  turn(Q.waist, 0, p.lean * (0.62 + 0.4 * p.pt), p.twist * 0.4);
   turn(Q.chest, 0, p.lean, p.twist);
-  turn(Q.head, p.twist * 0.45, p.lean * 0.25);
-  J.pelvis.set(0, p.py, p.pz);
+  turn(Q.head, p.twist * 0.45, p.lean * p.hp);
+  J.pelvis.set(p.px, p.py, p.pz);
   spine.set(0, Math.cos(p.lean), Math.sin(p.lean));
   J.waist.copy(J.pelvis).addScaledVector(spine, 0.19);
   J.chest.copy(J.pelvis).addScaledVector(spine, 0.36);
@@ -233,33 +342,49 @@ const solve = (p) => {
   J.neck.copy(J.pelvis).addScaledVector(spine, M.spine + 0.03);
   J.head.set(0, 0.195, 0.012).applyQuaternion(Q.head).add(J.neck);
 
-  // the stick rides on the chest and may turn against it; the hands sit on it and the elbows follow
+  // the stick rides on the chest (and may turn against it) or lies in the room; a pose can stand between the two
   Q.stick.copy(Q.chest).multiply(tQ.setFromAxisAngle(Y, p.syaw)).multiply(tQ.setFromAxisAngle(Z, p.sroll));
   J.stick.set(p.sx, p.sy, p.sz).applyQuaternion(Q.chest).add(J.collar);
+  if (p.sw > 0) {
+    qRoom.setFromAxisAngle(Y, p.tyaw).multiply(tQ.setFromAxisAngle(Z, p.troll));
+    Q.stick.slerp(qRoom, p.sw);
+    J.stick.lerp(tA.set(p.tx, p.ty, p.tz), p.sw);
+  }
   axis.copy(X).applyQuaternion(Q.stick);
   for (const s of SIDES) {
     const k = s.sign, v = s.v, left = k > 0;
+    // the hand sits on the stick, or holds a band's loop at a place of its own; the elbow follows
     v.shoulder.set(k * M.shoulder, 0, 0).applyQuaternion(Q.chest).add(J.collar);
-    v.grip.copy(J.stick).addScaledVector(axis, k * p.grip);
+    v.grip.copy(J.stick).addScaledVector(axis, left ? p.gl : p.gr);
     v.wrist.set(0, p.wy, p.wz).applyQuaternion(Q.stick).add(v.grip);
+    v.hand.copy(v.grip);
+    if (p.hf > 0) {
+      tA.set(left ? p.hlx : p.hrx, left ? p.hly : p.hry, left ? p.hlz : p.hrz);
+      v.wrist.lerp(tA, p.hf);
+      v.hand.lerp(tA, p.hf);
+    }
     hint.set(k * p.ex, p.ey, p.ez).applyQuaternion(Q.chest);
     bend(v.shoulder, v.wrist, M.upperArm, M.forearm, hint, v.elbow);
     v.end.copy(J.stick).addScaledVector(axis, k * M.stick);
 
-    // the foot stays where the pose puts it; the knee follows the toes
+    // the foot stays where the pose puts it, on the floor or in the air; the knee follows the toes
     const yaw = left ? p.lyaw : p.ryaw;
-    turn(s.footQ, yaw, left ? p.llift : p.rlift);
-    v.ball.set(left ? p.lx : p.rx, 0, left ? p.lz : p.rz);
+    turn(s.footQ, yaw, left ? p.llift : p.rlift).multiply(tQ.setFromAxisAngle(Z, left ? p.lroll : p.rroll));
+    v.ball.set(left ? p.lx : p.rx, left ? p.ly : p.ry, left ? p.lz : p.rz);
     v.ankle.set(0, 0.085, -0.13).applyQuaternion(s.footQ).add(v.ball);
     v.hip.set(k * M.hip, 0, 0).applyQuaternion(Q.pelvis).add(J.pelvis);
-    hint.set(k * p.knee, 0, 1).applyAxisAngle(Y, yaw);
+    hint.set(k * p.knee, left ? p.khl : p.khr, 1).applyAxisAngle(Y, yaw);
     bend(v.hip, v.ankle, M.thigh, M.shin, hint, v.knee);
     v.loop.set(k * 0.058, 0.074, -0.07).applyQuaternion(s.footQ).add(v.ball);
+
+    // the band runs from the stick's end to the loop: on the foot, or in the hand
+    s.inHand = left ? p.bl : p.br;
+    v.far.copy(v.loop).lerp(v.hand, s.inHand);
   }
 };
 
 // the mean length of the two bands in the pose just solved
-const bandLength = () => (SIDES[0].v.end.distanceTo(SIDES[0].v.loop) + SIDES[1].v.end.distanceTo(SIDES[1].v.loop)) / 2;
+const bandLength = () => (SIDES[0].v.end.distanceTo(SIDES[0].v.far) + SIDES[1].v.end.distanceTo(SIDES[1].v.far)) / 2;
 
 const aim = (mesh, from, to) => {
   mesh.position.copy(from);
@@ -284,7 +409,7 @@ const place = () => {
     aim(s.upperArm, v.shoulder, v.elbow);
     s.elbowBall.position.copy(v.elbow);
     aim(s.forearm, v.elbow, v.wrist);
-    s.fist.position.copy(v.grip);
+    s.fist.position.copy(v.hand);
     s.fist.quaternion.copy(Q.stick);
     s.hipBall.position.copy(v.hip);
     aim(s.thigh, v.hip, v.knee);
@@ -293,8 +418,11 @@ const place = () => {
     s.ankleBall.position.copy(v.ankle);
     s.foot.position.copy(v.ball);
     s.foot.quaternion.copy(s.footQ);
-    // a band is a straight line from the stick's end to the foot loop, and it thins as it is pulled longer
-    tA.subVectors(v.loop, v.end);
+    // the loop is drawn on the foot only while the foot wears it
+    s.strap.visible = s.inHand < 0.98;
+    s.strap.scale.setScalar(Math.max(0.001, 1 - s.inHand));
+    // a band is a straight line from the stick's end to its loop, and it thins as it is pulled longer
+    tA.subVectors(v.far, v.end);
     const length = tA.length();
     const r = 0.0098 * Math.sqrt(1 / length);
     s.band.position.copy(v.end).addScaledVector(tA, 0.5);

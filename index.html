@@ -11,11 +11,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Karantina:wght@700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=15">
+<link rel="stylesheet" href="styles.css?v=16">
 <script defer src="app.js?v=12"></script>
 <script defer src="vendor/three.classic.js"></script>
 <script defer src="viewer3d.js?v=6"></script>
-<script defer src="moves3d.js?v=6"></script>
+<script defer src="moves3d.js?v=7"></script>
 </head>
 <body>
 <a class="skip" href="#main">דילוג לתוכן</a>
@@ -119,9 +119,8 @@
           <h3>מתיחה ביד אחת מעל הראש</h3>
         </article>
       </div>
-      <p class="draft-note">את שמות ששת התרגילים בשורה השנייה והשלישית נתתי לפי מה שרואים בתמונות. צריך לאשר אותם או להחליף לשמות שאתם משתמשים בהם.</p>
 
-      <!-- the same three movements in 3D: a jointed figure performs them in a loop (moves3d.js). The block
+      <!-- the same nine movements in 3D: a jointed figure performs them in a loop (moves3d.js). The block
            stays hidden until the script has a WebGL canvas to draw on, so without it the photographs above
            stand on their own. -->
       <div class="moves3d" id="moves3d" data-moves3d hidden>
@@ -145,6 +144,36 @@
               <span class="moves3d__mark" aria-hidden="true"></span>
               <span class="moves3d__name">מכרע עם סיבוב</span>
               <span class="moves3d__how">רגל אחת לפנים, המוט לרוחב החזה. יורדים למכרע ומסובבים את הגוף אל הרגל הקדמית, והיד שבצד הרגל האחורית דוחפת את המוט עד שהיא ישרה. עולים ומחזירים את המוט אל החזה.</span>
+            </button></li>
+            <li><button type="button" class="moves3d__pick" data-move="curl" aria-pressed="false">
+              <span class="moves3d__mark" aria-hidden="true"></span>
+              <span class="moves3d__name">כפיפת מרפקים</span>
+              <span class="moves3d__how">עומדים עם המוט בידיים, כפות הידיים כלפי מעלה. מכופפים את המרפקים עד שהמוט מגיע לגובה החזה, ומורידים לאט.</span>
+            </button></li>
+            <li><button type="button" class="moves3d__pick" data-move="kick" aria-pressed="false">
+              <span class="moves3d__mark" aria-hidden="true"></span>
+              <span class="moves3d__name">הרמת רגל לאחור</span>
+              <span class="moves3d__how">על שש, הידיים אוחזות במוט שמונח על הרצפה. מרימים רגל אחת לאחור ולמעלה, ומחזירים לאט.</span>
+            </button></li>
+            <li><button type="button" class="moves3d__pick" data-move="triceps" aria-pressed="false">
+              <span class="moves3d__mark" aria-hidden="true"></span>
+              <span class="moves3d__name">פשיטת מרפקים מעל הראש</span>
+              <span class="moves3d__how">עומדים על המוט ואוחזים בלולאות מאחורי הראש. מיישרים את הידיים למעלה, ומחזירים לאט.</span>
+            </button></li>
+            <li><button type="button" class="moves3d__pick" data-move="sideleg" aria-pressed="false">
+              <span class="moves3d__mark" aria-hidden="true"></span>
+              <span class="moves3d__name">הרמת רגל הצידה</span>
+              <span class="moves3d__how">עומדים על רגל אחת ונשענים על המוט. מרימים את הרגל השנייה הצידה, ומחזירים לאט.</span>
+            </button></li>
+            <li><button type="button" class="moves3d__pick" data-move="reach" aria-pressed="false">
+              <span class="moves3d__mark" aria-hidden="true"></span>
+              <span class="moves3d__name">סקוואט עם הושטת ידיים</span>
+              <span class="moves3d__how">עומדים על המוט ואוחזים בלולאות. יורדים לסקוואט ומושיטים את הידיים לפנים, ועולים חזרה.</span>
+            </button></li>
+            <li><button type="button" class="moves3d__pick" data-move="onearm" aria-pressed="false">
+              <span class="moves3d__mark" aria-hidden="true"></span>
+              <span class="moves3d__name">מתיחה ביד אחת מעל הראש</span>
+              <span class="moves3d__how">עומדים על המוט ואוחזים בלולאות. יד אחת נשארת ליד החזה, והשנייה מתיישרת למעלה וחוזרת.</span>
             </button></li>
           </ul>
           <div class="moves3d__stage">
