@@ -80,21 +80,26 @@
     });
   }
 
-  // ---- the hero's film. It runs in a loop on every screen (the upright cut on an upright screen) and
-  // starts without sound, because browsers start nothing else on their own; its two buttons stop it and
-  // turn the sound on. It rests while the hero is off the screen. A visitor whose system asks for less
-  // motion gets the still picture, and the film only if they press play. ----
+  // ---- the hero's film. It runs in a loop on every screen (the upright cut on an upright screen), with
+  // its sound on at a low volume, and one button mutes it. A browser that refuses to start a film with
+  // sound before the visitor has touched the page gets it silent, and the sound comes on with the first
+  // click, tap or key. The film rests while the hero is off the screen. A visitor whose system asks for
+  // less motion gets the still picture, and the film only if they ask for its sound. ----
   var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var heroFilm = $('.hero__video');
-  var heroPlay = $('[data-hero-play]');
   var heroSound = $('[data-hero-sound]');
-  if (heroFilm && heroPlay && heroSound) {
-    var heroStopped = calm;   // the visitor's own choice, kept apart from the pauses the page makes
+  if (heroFilm && heroSound) {
+    var HERO_VOLUME = 0.35;
+    var heroWanted = !calm;        // whether the film should run at all
+    var soundWanted = true;        // the visitor's own choice
+    var soundRefused = false;      // the browser's, until the first touch
     var heroSeen = true;
     var uprightScreen = window.matchMedia('(max-aspect-ratio: 4/5)');
     var heroCut = function () { return uprightScreen.matches ? heroFilm.dataset.tall : heroFilm.dataset.wide; };
     var syncHero = function () {
-      if (heroStopped || !heroSeen || document.hidden) {
+      heroFilm.volume = HERO_VOLUME;
+      heroFilm.muted = !soundWanted || soundRefused;
+      if (!heroWanted || !heroSeen || document.hidden) {
         if (heroFilm.getAttribute('src')) heroFilm.pause();
       } else {
         if (!heroFilm.getAttribute('src')) heroFilm.src = heroCut();
@@ -102,24 +107,28 @@
           var started = heroFilm.play();
           if (started && started.catch) started.catch(function () {
             // a start with sound that the browser refuses falls back to a silent one
-            if (!heroFilm.muted) { heroFilm.muted = true; syncHero(); }
+            if (!heroFilm.muted) { soundRefused = true; syncHero(); }
           });
         }
       }
-      heroPlay.textContent = heroStopped ? 'הפעלה' : 'עצירה';
       heroSound.textContent = heroFilm.muted ? 'הפעלת קול' : 'השתקה';
     };
-    heroPlay.addEventListener('click', function () { heroStopped = !heroStopped; syncHero(); });
     heroSound.addEventListener('click', function () {
-      heroFilm.muted = !heroFilm.muted;
-      if (!heroFilm.muted) heroStopped = false;   // asking for the sound also asks for the film
+      if (heroFilm.muted) { soundWanted = true; soundRefused = false; heroWanted = true; }   // asking for the sound also asks for the film
+      else soundWanted = false;
       syncHero();
     });
-    // a start the browser refused (a hidden or sleeping window) is tried again when the film can play,
-    // when the page is seen again, and on the first touch
+    // the first touch anywhere else lets the sound start, if the browser held it back
+    var firstTouch = function (ev) {
+      if (ev.target && ev.target.closest && ev.target.closest('[data-hero-controls]')) return;
+      if (soundRefused) { soundRefused = false; syncHero(); }
+    };
+    window.addEventListener('pointerdown', firstTouch, { passive: true });
+    window.addEventListener('keydown', firstTouch);
+    // a start the browser refused (a hidden or sleeping window) is tried again when the film can play
+    // and when the page is seen again
     heroFilm.addEventListener('canplay', syncHero);
     document.addEventListener('visibilitychange', syncHero);
-    window.addEventListener('pointerdown', syncHero, { passive: true });
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (entries) { heroSeen = entries[0].isIntersecting; syncHero(); }, { threshold: 0.15 }).observe(heroFilm);
     }
