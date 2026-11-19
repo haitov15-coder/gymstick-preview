@@ -11,8 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Karantina:wght@700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=12">
-<script defer src="app.js?v=10"></script>
+<link rel="stylesheet" href="styles.css?v=13">
+<script defer src="app.js?v=11"></script>
 <script defer src="vendor/three.classic.js"></script>
 <script defer src="viewer3d.js?v=6"></script>
 <script defer src="moves3d.js?v=6"></script>
@@ -61,11 +61,11 @@
     <video class="hero__video" muted loop playsinline preload="none" data-wide="video/intro-wide-hd.mp4" data-tall="video/intro-upright.mp4" aria-label="שיעור קבוצתי עם מוטות Gymstick: מכרעים, סקוואטים ותרגילי רצפה"></video>
     <div class="wrap hero__inner">
       <div class="hero__copy">
-        <h1 class="display" id="hero-h">האימון שלך.<br>בקצב שלך.</h1>
-        <p class="lead">מוט ושתי גומיות, וזה כל הציוד. מתאמנים איתו על כל הגוף, בסלון או בפארק.</p>
+        <h1 class="display" id="hero-h">אימון לכל הגוף,<br>בבית או בחוץ</h1>
+        <p class="lead"><bdi lang="en">Gymstick</bdi> משלב מוט ושתי גומיות התנגדות לתרגילי כוח. אפשר לעבוד על הרגליים, הגב, הכתפיים והבטן, ולשנות את ההתנגדות באמצעות גלגול הגומיות על המוט.</p>
         <div class="btn-row">
           <a class="btn btn--primary" href="#kits">לבחירת ערכה</a>
-          <a class="btn btn--line" href="#train">איך מתאמנים איתו</a>
+          <a class="btn btn--line" href="#train">לצפייה בתרגילים</a>
         </div>
         <p class="hero__levels">
           <span class="dots" aria-hidden="true"><i style="--c:#3fae40"></i><i style="--c:#1f5fd0"></i><i style="--c:#1c1b1a"></i><i style="--c:#a9adb2"></i><i style="--c:#b99547"></i></span>
@@ -83,24 +83,21 @@
   <section class="section zone-coal" id="train" aria-labelledby="moves-h">
     <div class="wrap">
       <div class="section-head">
-        <h2 id="moves-h">מוט אחד, אימון לכל הגוף</h2>
-        <p class="lead">הגומיות מחוברות לכפות הרגליים ומושכות את המוט למטה. כל תנועה שתעשו איתו היא נגד המשיכה הזאת.</p>
+        <h2 id="moves-h">מה אפשר לעשות עם <bdi lang="en">Gymstick</bdi>?</h2>
+        <p class="lead">מכניסים את כפות הרגליים ללולאות ומבצעים את התרגילים עם המוט. הגומיות מוסיפות התנגדות לתנועה. הנה כמה דוגמאות:</p>
       </div>
       <div class="moves">
         <article class="move">
           <div class="move__pic"><img src="img/move-squat.webp" width="1000" height="1500" alt="מאמן בסקוואט עמוק, המוט מונח על הכתפיים והגומיות מתוחות אל כפות הרגליים" loading="lazy" style="--pos: 45% 50%"></div>
-          <h3>רגליים</h3>
-          <p>סקוואט. המוט על הכתפיים, ובעלייה הגומיות נמתחות ומקשות.</p>
+          <h3>סקוואט</h3>
         </article>
         <article class="move">
           <div class="move__pic"><img src="img/move-press.webp" width="1000" height="1500" alt="מאמן לוחץ את המוט מעל הראש בידיים ישרות, שתי הגומיות מתוחות לכל גובה הגוף" loading="lazy" style="--pos: 50% 20%"></div>
-          <h3>פלג גוף עליון</h3>
-          <p>לחיצה מעל הראש. דוחפים את המוט למעלה, ושתי הגומיות מושכות אותו חזרה.</p>
+          <h3>לחיצת כתפיים</h3>
         </article>
         <article class="move">
           <div class="move__pic"><img src="img/move-lunge-twist.webp" width="1700" height="1133" alt="מאמן במכרע, מסובב את הגוף כשהמוט מוחזק לרוחב החזה" loading="lazy" style="--pos: 52% 50%"></div>
-          <h3>בטן וגב</h3>
-          <p>מכרע עם סיבוב גוף. יורדים, מסובבים את הגוף עם המוט, והבטן שומרת על שיווי המשקל.</p>
+          <h3>מכרע עם סיבוב</h3>
         </article>
       </div>
 
@@ -109,8 +106,8 @@
            stand on their own. -->
       <div class="moves3d" id="moves3d" data-moves3d hidden>
         <div class="moves3d__head">
-          <h3>אותם שלושה תרגילים, מכל זווית</h3>
-          <p>בחרו תרגיל, סובבו את הדמות, והאטו כדי לראות כל שלב בתנועה.</p>
+          <h3>צפו בתרגיל מכל זווית</h3>
+          <p>בחרו תרגיל וגררו את הדמות כדי לסובב אותה. אפשר להאט את ההדגמה.</p>
         </div>
         <div class="moves3d__body">
           <ul class="moves3d__picks">
@@ -121,12 +118,12 @@
             </button></li>
             <li><button type="button" class="moves3d__pick" data-move="press" aria-pressed="false">
               <span class="moves3d__mark" aria-hidden="true"></span>
-              <span class="moves3d__name">לחיצה מעל הראש</span>
+              <span class="moves3d__name">לחיצת כתפיים</span>
               <span class="moves3d__how">המוט בגובה החזה. דוחפים למעלה עד שהידיים ישרות, ומורידים לאט.</span>
             </button></li>
             <li><button type="button" class="moves3d__pick" data-move="lunge" aria-pressed="false">
               <span class="moves3d__mark" aria-hidden="true"></span>
-              <span class="moves3d__name">מכרע עם סיבוב גוף</span>
+              <span class="moves3d__name">מכרע עם סיבוב</span>
               <span class="moves3d__how">רגל אחת לפנים, המוט לרוחב החזה. יורדים למכרע ומסובבים את הגוף אל הרגל הקדמית, והיד שבצד הרגל האחורית דוחפת את המוט עד שהיא ישרה. עולים ומחזירים את המוט אל החזה.</span>
             </button></li>
           </ul>
@@ -155,13 +152,13 @@
   <section class="section zone-coal" id="workouts" aria-labelledby="workouts-h">
     <div class="wrap">
       <div class="section-head">
-        <h2 id="workouts-h">הערכה הגיעה. מה עכשיו?</h2>
-        <p class="lead">צילמנו חימום, שלושה אימונים מלאים ומתיחות. מתחילים מהחימום, וממשיכים לפי הסדר.</p>
+        <h2 id="workouts-h">סרטוני אימון עם <bdi lang="en">Gymstick</bdi></h2>
+        <p class="lead">חימום, שלושה אימונים מלאים ומתיחות, שתוכלו לבצע לצד הסרטון.</p>
       </div>
 
       <!-- the maker's five full sessions on YouTube, in the order of a training day. A card plays its video in a
            window on the page (app.js); opened as a file, its own link opens the video on YouTube. -->
-      <ol class="sessions">
+      <ul class="sessions">
         <li>
           <a class="vid" href="https://www.youtube.com/watch?v=RaiaAN8OSq0" target="_blank" rel="noopener" data-yt="RaiaAN8OSq0">
             <span class="vid__pic"><img src="https://i.ytimg.com/vi/RaiaAN8OSq0/hqdefault.jpg" width="480" height="360" alt="" loading="lazy"><span class="vid__play" aria-hidden="true"></span><span class="vid__time"><span class="sr-only">סרטון, משך </span><span class="ltr">4:56</span></span></span>
@@ -192,17 +189,17 @@
             <span class="vid__title">מתיחות</span>
           </a>
         </li>
-      </ol>
+      </ul>
       <p class="draft-note">הסרטונים מוצגים מיוטיוב. לפני פרסום כדאי לוודא מול Gymstick הבינלאומית שמותר להציג אותם באתר. כשפותחים את העמוד ישירות מהקובץ, הסרטון נפתח ביוטיוב ולא בתוך העמוד.</p>
 
       <div class="library" aria-labelledby="library-h">
         <div class="library__head">
-          <h3 class="h2" id="library-h">כל תרגיל בנפרד</h3>
-          <p class="lead"><span class="ltr">18</span> תרגילים, כל אחד בסרטון של פחות מדקה. למי שרוצה לראות תנועה אחת מקרוב.</p>
+          <h3 class="h2" id="library-h">הדגמות לפי תרגיל</h3>
+          <p class="lead">רוצים לבדוק איך מבצעים תרגיל מסוים? כאן תמצאו <span class="ltr">18</span> הדגמות קצרות, לפי אזור בגוף.</p>
         </div>
         <form class="filters" data-filters aria-label="סינון תרגילים">
           <fieldset class="filter">
-            <legend>על מה עובדים</legend>
+            <legend>אזור בגוף</legend>
             <label class="chip"><input type="radio" name="f-area" value="all" checked><span>הכול</span></label>
             <label class="chip"><input type="radio" name="f-area" value="legs"><span>רגליים וישבן</span></label>
             <label class="chip"><input type="radio" name="f-area" value="upper"><span>פלג גוף עליון</span></label>
@@ -210,7 +207,7 @@
             <label class="chip"><input type="radio" name="f-area" value="combo"><span>משולב</span></label>
           </fieldset>
         </form>
-        <p class="library__count" role="status" data-filter-count>מוצגים 18 תרגילים</p>
+        <p class="library__count" role="status" data-filter-count>מוצגות 18 הדגמות</p>
         <ul class="vids" data-vids>
           <li data-area="legs">
             <a class="vid" href="https://www.youtube.com/watch?v=YJnOovzQYOQ" target="_blank" rel="noopener" data-yt="YJnOovzQYOQ">
@@ -344,14 +341,15 @@
 
       <!-- the maker's printed plan, kept as a small row: the one thing here that can be printed and hung up -->
       <div class="poster-row">
-        <a class="poster-row__pic" href="docs/gymstick-original-poster.pdf" aria-label="פתיחת פוסטר התרגילים שלנו, קובץ PDF">
-          <img src="img/poster-18.webp" width="2000" height="2255" alt="פוסטר התרגילים של Gymstick Original: 18 תרגילים ממוספרים, כל אחד בשתי תמונות" loading="lazy">
+        <a class="poster-row__pic" href="docs/gymstick-original-poster.pdf" aria-label="פתיחת דף התרגילים של Gymstick, קובץ PDF">
+          <img src="img/poster-18.webp" width="2000" height="2255" alt="דף התרגילים של Gymstick Original: 18 תרגילים ממוספרים, כל אחד בשתי תמונות" loading="lazy">
         </a>
         <div class="poster-row__copy">
-          <h3>כל 18 התרגילים בדף אחד, להדפסה</h3>
-          <p>הפוסטר שלנו: עוברים על התרגילים לפי הסדר, <span class="ltr">10–20</span> חזרות בכל אחד. בכל סיבוב נוסף מגלגלים את הגומייה עוד קצת, כדי שיהיה קשה יותר. עד שלושה סיבובים.</p>
+          <h3>דף תרגילים להדפסה</h3>
+          <p>כל <span class="ltr">18</span> התרגילים בדף אחד, שאפשר להניח לידכם בזמן האימון.</p>
+          <p class="small">לפי הדף: <span class="ltr">10–20</span> חזרות בכל תרגיל, עד שלושה סיבובים. בכל סיבוב נוסף מגלגלים את הגומיות מעט יותר.</p>
         </div>
-        <a class="btn btn--line" href="docs/gymstick-original-poster.pdf">להורדת הפוסטר</a>
+        <a class="btn btn--line" href="docs/gymstick-original-poster.pdf">להורדת דף התרגילים</a>
       </div>
     </div>
   </section>
@@ -361,7 +359,7 @@
     <div class="wrap">
       <div class="section-head">
         <h2 id="kits-h">איזו ערכה מתאימה לי?</h2>
-        <p class="lead">אותו מוט, חמש דרגות התנגדות. כך אנחנו ממליצים לבחור:</p>
+        <p class="lead">הערכות מגיעות בחמש דרגות התנגדות. בחרו דרגה בהתאם לניסיון שלכם ולסוג האימון שתרצו לבצע.</p>
       </div>
       <div class="kits" data-kits>
         <div>
@@ -373,7 +371,6 @@
               <span class="kit-row__name"><bdi lang="en">Light</bdi><small>ירוק</small></span>
               <span class="kit-row__bar" aria-hidden="true"><i style="--c:#3fae40; --w:33.3%"></i></span>
               <span class="kit-row__kg"><span class="ltr">1–10</span> ק״ג</span>
-              <span class="kit-row__who">לשיקום ולגיל השלישי</span>
             </label>
             <label class="kit-row">
               <input type="radio" name="kit" value="medium" checked>
@@ -381,7 +378,6 @@
               <span class="kit-row__name"><bdi lang="en">Medium</bdi><small>כחול</small></span>
               <span class="kit-row__bar" aria-hidden="true"><i style="--c:#1f5fd0; --w:50%"></i></span>
               <span class="kit-row__kg"><span class="ltr">1–15</span> ק״ג</span>
-              <span class="kit-row__who">לנשים ולספורטאים צעירים</span>
             </label>
             <label class="kit-row">
               <input type="radio" name="kit" value="strong">
@@ -389,7 +385,6 @@
               <span class="kit-row__name"><bdi lang="en">Strong</bdi><small>שחור</small></span>
               <span class="kit-row__bar" aria-hidden="true"><i style="--c:#1c1b1a; --w:66.7%"></i></span>
               <span class="kit-row__kg"><span class="ltr">1–20</span> ק״ג</span>
-              <span class="kit-row__who">לגברים, לנשים בכושר ולספורטאים צעירים</span>
             </label>
             <label class="kit-row">
               <input type="radio" name="kit" value="extra">
@@ -397,7 +392,6 @@
               <span class="kit-row__name"><bdi lang="en">Extra Strong</bdi><small>כסוף</small></span>
               <span class="kit-row__bar" aria-hidden="true"><i style="--c:#a9adb2; --w:83.3%"></i></span>
               <span class="kit-row__kg"><span class="ltr">1–25</span> ק״ג</span>
-              <span class="kit-row__who">לגברים בכושר ולספורטאים</span>
             </label>
             <label class="kit-row">
               <input type="radio" name="kit" value="super">
@@ -405,10 +399,9 @@
               <span class="kit-row__name"><bdi lang="en">Super Strong</bdi><small>זהב</small></span>
               <span class="kit-row__bar" aria-hidden="true"><i style="--c:#b99547; --w:100%"></i></span>
               <span class="kit-row__kg"><span class="ltr">1–30</span> ק״ג</span>
-              <span class="kit-row__who">לגברים בכושר גבוה ולספורטאים</span>
             </label>
           </fieldset>
-          <p class="kit-list__note small muted">מתלבטים בין שתיים? בכל ערכה מתחילים מ־<span class="ltr">1</span> ק״ג, ומגלגלים את הגומייה על המוט כדי להעלות.</p>
+          <p class="kit-list__note small muted">בכל דרגה אפשר לשנות את ההתנגדות באמצעות גלגול הגומיות על המוט, בתוך הטווח של אותה ערכה.</p>
           <div class="kit-all">
             <h3>מה יש בכל ערכה</h3>
             <ul class="includes">
@@ -425,7 +418,6 @@
           <h3>ערכת <bdi lang="en" data-kit-name>Medium</bdi>, <span data-kit-colour>כחול</span></h3>
           <dl class="facts">
             <div><dt>דרגת התנגדות</dt><dd><span class="ltr" data-kit-kg>1–15</span> ק״ג</dd></div>
-            <div><dt>למי</dt><dd data-kit-who>לנשים ולספורטאים צעירים</dd></div>
           </dl>
           <p class="price"><span class="price__label">מחיר</span> <span class="price__sum"><span class="ltr">350</span> ₪</span></p>
           <a class="btn btn--primary" data-kit-link href="product.html?level=medium">לעמוד הערכה</a>
@@ -438,18 +430,18 @@
   <section class="section zone-mist" id="details" aria-labelledby="details-h">
     <div class="wrap">
       <div class="section-head">
-        <h2 id="details-h">המוט מקרוב</h2>
-        <p class="lead">סובבו את המוט, פרקו אותו לחלקים ובחרו חלק כדי לראות מה הוא עושה.</p>
+        <h2 id="details-h">הכירו את חלקי המוט</h2>
+        <p class="lead">גררו כדי לסובב את המוט, ולחצו על החלקים כדי לקרוא עליהם.</p>
       </div>
       <div class="viewer" data-viewer>
         <div class="viewer__panel">
           <ol class="viewer__feats">
-            <li><button class="viewer__feat" type="button" data-feat="foam" aria-pressed="false"><span class="viewer__num" aria-hidden="true">1</span><span class="viewer__title">ידית ספוג</span><span class="viewer__text">ספוג רך במרכז המוט, ושם אוחזים. את הגומיות מגלגלים רק עד קצה הספוג, לא עליו.</span></button></li>
-            <li><button class="viewer__feat" type="button" data-feat="stick" aria-pressed="false"><span class="viewer__num" aria-hidden="true">2</span><span class="viewer__title">מוט פיברגלס</span><span class="viewer__text">מתפרק לשניים. מחברים לפני האימון, ומפרקים כשרוצים לאחסן או לקחת לדרך.</span></button></li>
-            <li><button class="viewer__feat" type="button" data-feat="lock" aria-pressed="false"><span class="viewer__num" aria-hidden="true">3</span><span class="viewer__title">כפתור נעילה</span><span class="viewer__text">נועל את שני חלקי המוט זה לזה. לוחצים עליו כדי לפרק.</span></button></li>
+            <li><button class="viewer__feat" type="button" data-feat="foam" aria-pressed="false"><span class="viewer__num" aria-hidden="true">1</span><span class="viewer__title">ידית ספוג</span><span class="viewer__text">כאן אוחזים במוט. את הגומיות מגלגלים רק עד קצה הידית, לא עליה.</span></button></li>
+            <li><button class="viewer__feat" type="button" data-feat="stick" aria-pressed="false"><span class="viewer__num" aria-hidden="true">2</span><span class="viewer__title">מוט פיברגלס</span><span class="viewer__text">מתפרק לשני חלקים, לאחסון ולנשיאה.</span></button></li>
+            <li><button class="viewer__feat" type="button" data-feat="lock" aria-pressed="false"><span class="viewer__num" aria-hidden="true">3</span><span class="viewer__title">כפתור נעילה</span><span class="viewer__text">נועל את שני חלקי המוט. לוחצים עליו כדי לפרק אותם.</span></button></li>
             <li><button class="viewer__feat" type="button" data-feat="strap" aria-pressed="false"><span class="viewer__num" aria-hidden="true">4</span><span class="viewer__title">רצועות הידוק</span><span class="viewer__text">רצועה בכל קצה של המוט. לפני כל אימון בודקים שהיא סגורה היטב.</span></button></li>
-            <li><button class="viewer__feat" type="button" data-feat="tube" aria-pressed="false"><span class="viewer__num" aria-hidden="true">5</span><span class="viewer__title">גומיות התנגדות</span><span class="viewer__text">שתי גומיות מלטקס טבעי. רוצים שיהיה קשה יותר? מגלגלים אותן על המוט. לא מותחים אותן יותר מפי ארבעה מהאורך שלהן.</span></button></li>
-            <li><button class="viewer__feat" type="button" data-feat="loop" aria-pressed="false"><span class="viewer__num" aria-hidden="true">6</span><span class="viewer__title">לולאות לכף הרגל</span><span class="viewer__text">לולאה בקצה כל גומייה. מכניסים אליה את כף הרגל, וכך הגומייה נשארת מעוגנת לרצפה.</span></button></li>
+            <li><button class="viewer__feat" type="button" data-feat="tube" aria-pressed="false"><span class="viewer__num" aria-hidden="true">5</span><span class="viewer__title">גומיות התנגדות</span><span class="viewer__text">שתי גומיות מלטקס טבעי. מגלגלים אותן על המוט כדי להגביר את ההתנגדות, ולא מותחים אותן יותר מפי ארבעה מאורכן.</span></button></li>
+            <li><button class="viewer__feat" type="button" data-feat="loop" aria-pressed="false"><span class="viewer__num" aria-hidden="true">6</span><span class="viewer__title">לולאות לכף הרגל</span><span class="viewer__text">לולאה בקצה כל גומייה, שמחברת אותה לכף הרגל.</span></button></li>
           </ol>
         </div>
         <div class="viewer__stage">
@@ -474,15 +466,15 @@
       <div class="closeups closeups--three">
         <figure class="closeup closeup--tall">
           <div class="closeup__pic"><img src="img/detail-lock.webp" width="972" height="771" alt="שני חלקי המוט מופרדים: פין שחור עם כפתור קפיצי, והחלק הכחול שמקבל אותו" loading="lazy"></div>
-          <figcaption><strong>מתפרק לשניים.</strong> לוחצים על כפתור הנעילה ומקבלים שני חלקים קצרים, שנוח לאחסן ולקחת.</figcaption>
+          <figcaption>כפתור הנעילה, בין שני חלקי המוט</figcaption>
         </figure>
         <figure class="closeup closeup--wide">
           <div class="closeup__pic"><img src="img/detail-loop.webp" width="1200" height="796" alt="לולאת בד כחולה עם אבזם בקצה גומיית ההתנגדות" loading="lazy"></div>
-          <figcaption><strong>לולאה לכל כף רגל.</strong> דורכים, והגומייה מעוגנת לרצפה לכל אורך התרגיל.</figcaption>
+          <figcaption>הלולאה לכף הרגל</figcaption>
         </figure>
         <figure class="closeup closeup--wide">
           <div class="closeup__pic"><img src="img/detail-end.webp" width="1200" height="628" alt="קצה המוט: רצועת הידוק, תחילת ידית הספוג והגומייה שיוצאת מהקצה" loading="lazy"></div>
-          <figcaption><strong>ידית ספוג.</strong> את הגומייה מגלגלים על המוט עד הספוג, ולא עליו.</figcaption>
+          <figcaption>ידית הספוג</figcaption>
         </figure>
       </div>
 
@@ -514,21 +506,21 @@
       </div>
       <div class="faq-grid">
         <div class="section-head" style="margin-bottom: 0">
-          <h2 id="faq-h">שאלות ששואלים אותנו</h2>
-          <p class="muted">התשובות על שימוש ובטיחות הן מהוראות השימוש שלנו.</p>
+          <h2 id="faq-h">שאלות נפוצות</h2>
+          <p class="muted">התשובות בנושאי שימוש ובטיחות מבוססות על הוראות השימוש של <bdi lang="en">Gymstick</bdi>.</p>
         </div>
         <div class="faq">
           <details>
-            <summary>זה מתאים למי שרק מתחיל להתאמן?</summary>
-            <div class="answer"><p>כן. בכל ערכה ההתנגדות מתחילה מ־<span class="ltr">1</span> ק״ג, ומעלים אותה בהדרגה. אנחנו ממליצים להתחיל לאט, ולהתייעץ עם רופא או פיזיותרפיסט לפני שמתחילים תוכנית אימונים חדשה.</p></div>
+            <summary>הערכה מתאימה למתחילים?</summary>
+            <div class="answer"><p>כן. בכל דרגה ההתנגדות מתחילה מ־<span class="ltr">1</span> ק״ג, ואפשר להעלות אותה בהדרגה. לפני שמתחילים תוכנית אימונים חדשה מומלץ להתייעץ עם רופא או פיזיותרפיסט.</p></div>
           </details>
           <details>
             <summary>איך בוחרים דרגת התנגדות?</summary>
-            <div class="answer"><p>לפי טבלת הערכות שלנו: כל ערכה מיועדת לקבוצה אחרת, מ־<bdi lang="en">Light</bdi> ועד <bdi lang="en">Super Strong</bdi>. את הכיוון העדין עושים תוך כדי אימון, כשמגלגלים את הגומייה על המוט.</p><p><a class="text-link" href="#kits">להשוואת הערכות</a></p></div>
+            <div class="answer"><p>לפי הניסיון שלכם וסוג האימון שתרצו לבצע. הדרגות נבדלות בטווח ההתנגדות, מ־<bdi lang="en">Light</bdi> (<span class="ltr">1–10</span> ק״ג) ועד <bdi lang="en">Super Strong</bdi> (<span class="ltr">1–30</span> ק״ג), ובתוך הטווח משנים את ההתנגדות בגלגול הגומיות על המוט.</p><p><a class="text-link" href="#kits">להשוואת הדרגות</a></p></div>
           </details>
           <details>
             <summary>כמה אפשר למתוח את הגומיות?</summary>
-            <div class="answer"><p>עד פי ארבעה מהאורך שלהן, לא יותר. לפני כל אימון בודקים שאין בגומייה חתך או סדק, וגומייה פגומה מחליפים.</p></div>
+            <div class="answer"><p>עד פי ארבעה מאורכן, לא יותר. לפני כל אימון בודקים שאין בגומיות חתך או סדק, ומחליפים גומייה פגומה.</p></div>
           </details>
           <details>
             <summary>יש בגומיות לטקס?</summary>
@@ -558,9 +550,9 @@
   <!-- the close -->
   <section class="closing" aria-labelledby="closing-h">
     <div class="wrap closing__inner">
-      <h2 id="closing-h">בוחרים ערכה, ומתחילים.</h2>
-      <p class="lead">בחרו דרגת התנגדות. סרטוני האימון שלנו כבר מחכים לכם.</p>
-      <a class="btn btn--primary" href="#kits">לבחירת הערכה שלי</a>
+      <h2 id="closing-h">לבחירת דרגת התנגדות</h2>
+      <p class="lead">השוו בין חמש הדרגות ובחרו את הערכה שלכם.</p>
+      <a class="btn btn--primary" href="#kits">לצפייה בערכות</a>
     </div>
     <figure class="closing__figure">
       <img src="img/ready-bag.webp" width="1000" height="1500" alt="מתאמנת מחייכת, נושאת על הכתף תיק Gymstick ירוק ומזרן אימון" loading="lazy">

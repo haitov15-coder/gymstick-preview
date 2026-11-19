@@ -3,13 +3,13 @@
 (function () {
   'use strict';
 
-  // The five real kits. Ranges and "who it suits" are the maker's, from the product poster.
+  // The five real kits and their resistance ranges, from the product poster.
   var LEVELS = {
-    light: { name: 'Light', colour: 'ירוק', hex: '#3fae40', kg: '1–10', who: 'לשיקום ולגיל השלישי', shots: [['ready-bag.webp', 'מתאמנת נושאת על הכתף תיק Gymstick ירוק ומזרן אימון']] },
-    medium: { name: 'Medium', colour: 'כחול', hex: '#1f5fd0', kg: '1–15', who: 'לנשים ולספורטאים צעירים', shots: [['move-lunge.webp', 'מתאמנת במכרע רחב, מוט Gymstick כחול על הכתפיים']] },
-    strong: { name: 'Strong', colour: 'שחור', hex: '#1c1b1a', kg: '1–20', who: 'לגברים, לנשים בכושר ולספורטאים צעירים', shots: [['hero-curl.webp', 'מאמן מכופף מרפקים עם מוט Gymstick שחור, הגומיות מתוחות אל כפות הרגליים']] },
-    extra: { name: 'Extra Strong', colour: 'כסוף', hex: '#a9adb2', kg: '1–25', who: 'לגברים בכושר ולספורטאים', shots: [] },
-    super: { name: 'Super Strong', colour: 'זהב', hex: '#b99547', kg: '1–30', who: 'לגברים בכושר גבוה ולספורטאים', shots: [] }
+    light: { name: 'Light', colour: 'ירוק', hex: '#3fae40', kg: '1–10', shots: [['ready-bag.webp', 'מתאמנת נושאת על הכתף תיק Gymstick ירוק ומזרן אימון']] },
+    medium: { name: 'Medium', colour: 'כחול', hex: '#1f5fd0', kg: '1–15', shots: [['move-lunge.webp', 'מתאמנת במכרע רחב, מוט Gymstick כחול על הכתפיים']] },
+    strong: { name: 'Strong', colour: 'שחור', hex: '#1c1b1a', kg: '1–20', shots: [['hero-curl.webp', 'מאמן מכופף מרפקים עם מוט Gymstick שחור, הגומיות מתוחות אל כפות הרגליים']] },
+    extra: { name: 'Extra Strong', colour: 'כסוף', hex: '#a9adb2', kg: '1–25', shots: [] },
+    super: { name: 'Super Strong', colour: 'זהב', hex: '#b99547', kg: '1–30', shots: [] }
   };
   var $ = function (sel, root) { return (root || document).querySelector(sel); };
   var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
@@ -149,7 +149,7 @@
         card.hidden = !ok;
         if (ok) shown += 1;
       });
-      countLine.textContent = shown === 1 ? 'מוצג תרגיל אחד' : 'מוצגים ' + shown + ' תרגילים';
+      countLine.textContent = shown === 1 ? 'מוצגת הדגמה אחת' : 'מוצגות ' + shown + ' הדגמות';
     });
   }
 
@@ -162,7 +162,7 @@
     player.setAttribute('aria-labelledby', 'player-title');
     player.innerHTML = '<div class="player__bar"><h2 class="player__title" id="player-title"></h2>' +
       '<button class="player__close" type="button">סגירה</button></div>' +
-      '<div class="player__frame"></div><p class="player__note">סרטון שלנו, מוצג דרך יוטיוב.</p>';
+      '<div class="player__frame"></div><p class="player__note">סרטון הדרכה של Gymstick, מוצג דרך יוטיוב.</p>';
     document.body.appendChild(player);
     var playerTitle = $('.player__title', player);
     var playerFrame = $('.player__frame', player);
@@ -197,7 +197,6 @@
       if (!L) return;
       $('[data-kit-name]', kits).textContent = L.name;
       $('[data-kit-kg]', kits).textContent = L.kg;
-      $('[data-kit-who]', kits).textContent = L.who;
       $('[data-kit-colour]', kits).textContent = L.colour;
       $('[data-kit-link]', kits).href = 'product.html?level=' + id;
       swapImage($('[data-kit-img]', kits), 'img/kit-' + id + '-angle.webp', 'ערכת Gymstick Original בדרגת ' + L.name + ', בצבע ' + L.colour);
@@ -251,7 +250,6 @@
       current = id;
       $$('[data-level-name]').forEach(function (el) { el.textContent = L.name; });
       $$('[data-level-kg]').forEach(function (el) { el.textContent = L.kg; });
-      $$('[data-level-who]').forEach(function (el) { el.textContent = L.who; });
       $$('[data-level-colour]').forEach(function (el) { el.textContent = L.colour; });
       var radio = $('input[name="level"][value="' + id + '"]', buy);
       if (radio) radio.checked = true;
